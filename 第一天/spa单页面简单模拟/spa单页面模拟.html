@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>spa</title>
+</head>
+<body>
+<a href="#findMusic">发现音乐</a>
+<a href="#myMusic">我的音乐</a>
+<a href="#friends">朋友</a>
+
+<div id="container">
+  
+  
+</div>
+
+<!--模板渲染-->
+<script type="text/html" id="tpl">
+  <h1>{{title}}</h1>
+  <p>{{content}}</p>
+
+</script>
+<script src="/node_modules/jquery/jquery.min.js"></script>
+<script src="/node_modules/artTemplate/template-web.js"></script>
+
+<script>
+  
+  /*
+  * <模拟实现单页面渲染功能>
+  * 获取地址栏hash值 根绝location.hash改变时触发的onhashchange事件
+  * 发送ajax请求获取后台数据,并渲染到页面
+  * */
+  $(function () {
+    renderPage();
+    
+    $(window).on("hashchange",function () {
+      renderPage();
+    });
+    
+    function renderPage() {
+      console.log(location.hash.slice(1));
+      $.ajax({
+        url:location.hash.slice(1) + ".json",
+        success:function(data) {
+          $("#container").html(template("tpl", data));
+        }
+      });
+    }
+  })
+</script>
+</body>
+</html>

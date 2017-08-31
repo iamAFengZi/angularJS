@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+  <link rel="stylesheet" type="text/css" href="../node_modules/bootstrap/dist/css/bootstrap.css">
+  <style>
+    [ng-cloak]{
+      display: none;
+    }
+    p{
+      color:red;
+    }
+    
+  </style>
+</head>
+
+<body ng-app="app">
+<div class="container" ng-controller="ctrl">
+  <div class="col-sm-6 col-sm-offset-3">
+    <div class="form-group">
+      <label >用户名:</label>
+      <input type="text" class="form-control" ng-model="userName">
+    </div>
+    <div class="form-group">
+      <label >密码:</label>
+      <input type="password" class="form-control" ng-model="pwd">
+    </div>
+    <div class="form-group">
+      <label >重复密码:</label>
+      <input type="password" class="form-control" ng-model="repwd">
+    </div>
+    <div class="form-group">
+      <label >是否同意协议:
+        <input type="checkbox" ng-model="isAgree">
+      </label>
+    </div>
+    <div class="form-group">
+      <p class="help-block"></p>
+    </div>
+    <p ng-cloak>{{errorMsg}}</p>
+    <button class="btn btn-success" ng-click="regist()">注册</button>
+  </div>
+</div>
+</body>
+<script src="../node_modules/angular/angular.js"></script>
+<script>
+  angular
+      .module("app",[])
+      .controller("ctrl",function ($scope) {
+        $scope.regist = function () {
+          $scope.errorMsg = "";
+          //用户名不能为空
+          if(!$scope.userName || $scope.userName.trim() == ""){
+            $scope.errorMsg = "用户名不能为空";
+            return false;
+          }
+          
+          //密码位数为6-16位
+          if(!$scope.pwd || $scope.pwd.length < 6 || $scope.pwd.length > 16){
+            $scope.errorMsg = "请输入6-16位数的密码";
+            return false;
+          }
+          
+          //确认密码和密码必须一致
+          if($scope.pwd != $scope.repwd){
+            $scope.errorMsg = "确认密码和密码必须一致";
+            return false;
+          }
+          
+          //必须同意协议
+          //不被选中时$scope.isAgree为undefined 选中时为true
+          if(!$scope.isAgree){
+            $scope.errorMsg = "您必须同意协议才能注册";
+            return false;
+          }
+          
+          //将注册信息存到localstorage中
+          var userInfo = {
+            userName : $scope.userName,
+            pwd : $scope.pwd
+          }
+          
+          //判断localstorage是否已经存在该用户名
+          var temp = localStorage.getItem(userInfo.userName);
+          //当存在该用户名时
+          if(temp){
+            $scope.errorMsg = "用户名已经存在请重新注册";
+            return false;
+          }
+          //不存在时则将该用户信息存到localstorage中,localstorage只能存字符串
+          //根据注册用户名存入对应的key
+          localStorage.setItem(userInfo.userName,JSON.stringify(userInfo));
+          alert("注册成功,3秒后即将跳转");
+        }
+      })
+  
+</script>
+</html>

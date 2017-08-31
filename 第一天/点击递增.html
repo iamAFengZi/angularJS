@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>点击递增</title>
+</head>
+<body ng-app="app" ng-controller="ctrl">
+
+<input type="number" ng-model="num">
+<button ng-click="addNum()">点我</button>
+<script src="../node_modules/angular/angular.js"></script>
+<script>
+  angular
+      .module("app",[])
+      .controller("ctrl", function ($scope) {
+        $scope.addNum = function () {
+          if(!$scope.num){
+            $scope.num = 0;
+          }
+          $scope.num = $scope.num + 1;
+        }
+      })
+  
+</script>
+</body>
+</html>

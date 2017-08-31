@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>加法计算器</title>
+</head>
+<body ng-app="app" ng-controller="ctrl">
+<input type="number" ng-model="num1">+<input type="number" ng-model="num2"><button ng-click="add()">=</button><span>{{num3}}</span>
+<script src="../node_modules/angular/angular.js"></script>
+<script>
+  angular
+      .module("app", [])
+      .controller("ctrl",function ($scope) {
+        $scope.add = function () {
+          $scope.num3 = $scope.num1 + $scope.num2;
+        }
+      })
+</script>
+</body>
+</html>
